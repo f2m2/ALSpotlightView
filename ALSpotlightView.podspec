@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "ALSpotlightView"
-  s.version      = "0.0.2"
+  s.version      = "0.0.3"
   s.summary      = "Custom control that simulates a modal spotlight effect."
 
   s.homepage     = "http://github.com/al7/ALSpotlightView"
