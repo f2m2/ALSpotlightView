@@ -21,19 +21,19 @@ import UIKit
 
 public typealias SpotlightTapHandler = () -> Void
 
-public class ALSpotlightView: UIView {
+open class ALSpotlightView: UIView {
 	
-	public var spotlightCenter: CGPoint = CGPoint(x: 0.5, y: 0.5)
-	public var spotlightRadius: CGFloat = 200.0
-	public var modalOpacity: CGFloat = 0.6
-	private weak var _targetView: UIView?
-	public var targetView: UIView? { get { return _targetView } }
-	public var onTapHandler: SpotlightTapHandler?
+	open var spotlightCenter: CGPoint = CGPoint(x: 0.5, y: 0.5)
+	open var spotlightRadius: CGFloat = 200.0
+	open var modalOpacity: CGFloat = 0.6
+	fileprivate weak var _targetView: UIView?
+	open var targetView: UIView? { get { return _targetView } }
+	open var onTapHandler: SpotlightTapHandler?
 	
 	public init(spotlightCenter: CGPoint, spotlightRadius: CGFloat = 200.0, modalOpacity: CGFloat = 0.6, onTapHandler: SpotlightTapHandler? = nil) {
-		super.init(frame: CGRectZero)
-		self.backgroundColor = UIColor.clearColor()
-		self.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+		super.init(frame: CGRect.zero)
+		self.backgroundColor = UIColor.clear
+		self.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 		self.spotlightRadius = spotlightRadius
 		self.spotlightCenter = spotlightCenter
 		self.modalOpacity = modalOpacity
@@ -50,7 +50,7 @@ public class ALSpotlightView: UIView {
 	
 	//MARK- Base Overrides
 	
-	public override func drawRect(rect: CGRect) {
+	open override func draw(_ rect: CGRect) {
 		
 		guard let context = UIGraphicsGetCurrentContext() else {
 			return
@@ -63,7 +63,7 @@ public class ALSpotlightView: UIView {
 			0.0, 0.0, 0.0, self.modalOpacity
 		]
 		
-		guard let gradient = CGGradientCreateWithColorComponents(colorSpace, colors, locations, 2) else {
+		guard let gradient = CGGradient(colorSpace: colorSpace, colorComponents: colors, locations: locations, count: 2) else {
 			return
 		}
 		
@@ -73,17 +73,17 @@ public class ALSpotlightView: UIView {
 		let endPoint = gradientCenter
 		let endRadius = self.spotlightRadius
 		
-		CGContextDrawRadialGradient(context, gradient, startPoint, startRadius, endPoint, endRadius, .DrawsAfterEndLocation)
+		context.drawRadialGradient(gradient, startCenter: startPoint, startRadius: startRadius, endCenter: endPoint, endRadius: endRadius, options: .drawsAfterEndLocation)
 	}
 	
-	public override func layoutSubviews() {
+	open override func layoutSubviews() {
 		self.setNeedsDisplay()
 	}
 	
 	//MARK- Public Methods
 	
-	public func showInView(view: UIView?, animated: Bool = true, duration: NSTimeInterval = 0.3) {
-		self._targetView = (view != nil) ? view : UIApplication.sharedApplication().keyWindow
+	open func showInView(_ view: UIView?, animated: Bool = true, duration: TimeInterval = 0.3) {
+		self._targetView = (view != nil) ? view : UIApplication.shared.keyWindow
 		if let tv = self.targetView {
 			self.alpha = 0.0
 			self.frame = tv.bounds
@@ -103,7 +103,7 @@ public class ALSpotlightView: UIView {
 			}
 			
 			if animated {
-				UIView.animateWithDuration(duration, animations: animation, completion: completion)
+				UIView.animate(withDuration: duration, animations: animation, completion: completion)
 			}
 			else {
 				animation()
@@ -111,11 +111,11 @@ public class ALSpotlightView: UIView {
 		}
 	}
 	
-	public func show(animated: Bool = true) {
+	open func show(_ animated: Bool = true) {
 		self.showInView(nil, animated: animated)
 	}
 	
-	public func hide(animated: Bool = true, duration: NSTimeInterval = 0.3) {
+	open func hide(_ animated: Bool = true, duration: TimeInterval = 0.3) {
 		self.clearGestureRecognizers()
 		self.onTapHandler = nil
 		
@@ -131,7 +131,7 @@ public class ALSpotlightView: UIView {
 		}
 		
 		if animated {
-			UIView.animateWithDuration(duration, animations: animation, completion: completion)
+			UIView.animate(withDuration: duration, animations: animation, completion: completion)
 		}
 		else {
 			animation()
@@ -141,7 +141,7 @@ public class ALSpotlightView: UIView {
 	
 	//MARK- Helper Methods
 	
-	private func clearGestureRecognizers() {
+	fileprivate func clearGestureRecognizers() {
 		if let recognizers = self.gestureRecognizers {
 			for recognizer in recognizers {
 				self.removeGestureRecognizer(recognizer)
@@ -151,7 +151,7 @@ public class ALSpotlightView: UIView {
 	
 	//MARK- Action Targets
 	
-	func onSpotlightViewTap(sender: UITapGestureRecognizer) {
+	func onSpotlightViewTap(_ sender: UITapGestureRecognizer) {
 		if let handler = self.onTapHandler {
 			handler()
 		}
