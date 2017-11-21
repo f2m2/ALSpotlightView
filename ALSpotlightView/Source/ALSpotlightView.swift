@@ -151,7 +151,7 @@ open class ALSpotlightView: UIView {
 	
 	//MARK- Action Targets
 	
-	func onSpotlightViewTap(_ sender: UITapGestureRecognizer) {
+	@objc func onSpotlightViewTap(_ sender: UITapGestureRecognizer) {
 		if let handler = self.onTapHandler {
 			handler()
 		}

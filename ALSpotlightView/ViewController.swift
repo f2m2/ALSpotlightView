@@ -33,7 +33,7 @@ class ViewController: UIViewController {
     
     //MARK- Tap Gesture Recognizer
     
-    func onTap(_ sender: UITapGestureRecognizer) {
+	@objc func onTap(_ sender: UITapGestureRecognizer) {
         let location = sender.location(in: self.view)
         var spotlightCenter = CGPoint.zero
         spotlightCenter.x = location.x / self.view.bounds.size.width
